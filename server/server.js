@@ -39,7 +39,29 @@ app.post('/login',function(req,res){
         loginData = JSON.parse(data)
     })
     req.on('end',function(){
-        console.log(loginData);
+        let sql = 'select password from admins where username=?';
+        pool.query(sql,[loginData.username],(err,results)=>{
+            if(err){
+                console.log(err);
+                res.send({
+                    code: 0,
+                    status: 'error'
+                })
+            }else{
+                let result = toDataArr(results);
+                if(result[0].password == loginData.password){
+                    res.send({
+                        code: 1,
+                        status: 'success'
+                    })
+                }else{
+                    res.send({
+                        code: 2,
+                        status: 'error'
+                    })
+                }
+            }
+        })
     })
 })
 

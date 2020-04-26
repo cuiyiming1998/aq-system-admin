@@ -1,17 +1,33 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+      <header-com></header-com>
+      <el-container class="main">
+        <sidebar></sidebar>
+      </el-container>
   </div>
 </template>
 
 <script>
-import HelloWorld from '@/components/HelloWorld.vue'
+import headerCom from '../components/header.vue'
+import sidebar from '../components/sidebar'
 
 export default {
   name: 'Home',
   components: {
-    HelloWorld
+    headerCom,
+    sidebar
   }
 }
 </script>
+
+<style lang="scss" scoped>
+  .home{
+    height: 100vh;
+    width: 100vw;
+    .main{
+      margin: 0;
+      padding: 0;
+      display: flex;
+    }
+  }
+</style>

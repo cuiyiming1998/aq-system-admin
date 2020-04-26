@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Login from '../views/Login'
 
 Vue.use(VueRouter)
 
@@ -21,7 +22,7 @@ Vue.use(VueRouter)
   {
     path: '/login',
     name: 'Login',
-    component: () => import('../views/Login.vue')
+    component: Login
   }
 ]
 
@@ -32,7 +33,7 @@ const router = new VueRouter({
 router.beforeEach((to,from,next)=>{
   // 判断是否需要登录
   if(to.matched.some(res=>res.meta.requireLogin)){
-      if(window.localStorage.getItem('userInfo')){
+      if(window.localStorage.getItem('user')){
         next()
       }else{
         next({path:'/login'})
