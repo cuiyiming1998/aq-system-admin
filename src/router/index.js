@@ -12,7 +12,30 @@ Vue.use(VueRouter)
     component: Home,
     meta:{
       requireLogin: true
-    }
+    },
+    redirect: '/systemInfo',
+    children:[
+      {
+        path: '/systemInfo',
+        name: 'systemInfo',
+        component: () => import('../components/systemInfo.vue')
+      },
+      {
+        path: '/userInfo',
+        name: 'userInfo',
+        component: () => import('../components/userInfo.vue')
+      },
+      {
+        path: '/projInfo',
+        name: 'projInfo',
+        component: () => import('../components/projInfo.vue')
+      },
+      {
+        path: '/answerInfo',
+        name: 'answerInfo',
+        component: () => import('../components/answerInfo.vue')
+      },
+    ]
   },
   {
     path: '/about',

@@ -14,7 +14,7 @@ app.all('*',function(req,res,next){
     res.header('Content-Type','application/json;charset=urf-8');
     next();
 });
-    
+
 // 创建连接池
 const pool = mysql.createPool({
     host: 'localhost',
@@ -26,12 +26,13 @@ const pool = mysql.createPool({
 
 console.log('已连接');
 
-// 封装一个解析返回数据函数，返回值是一个数组
 toDataArr = function(data){
     let String = JSON.stringify(data);
     String = JSON.parse(String);
     return String;
 }
+
+// 登录验证
 
 app.post('/login',function(req,res){
     let loginData = '';
@@ -62,6 +63,44 @@ app.post('/login',function(req,res){
                 }
             }
         })
+    })
+})
+
+// 主页获取信息
+app.get('/systemInfo',function(req,res){
+    let usersCount = 0,
+        projectsCount = 0;
+    let sql = 'select username from user';
+    pool.query(sql,[],(err,results)=>{
+        if(err){
+            console.log(err);
+            res.send({
+                code: 0,
+                status: 'error'
+            })
+        }else{
+            let result = toDataArr(results);
+            usersCount = result.length;
+            sql = 'select projectId from projects'
+            pool.query(sql,[],(err,results)=>{
+                if(err){
+                    console.log(err);
+                    res.send({
+                        code: 0,
+                        status: 'error'
+                    })
+                }else{
+                    result = toDataArr(results);
+                    projectsCount = result.length;
+                    res.send({
+                        code: 1,
+                        status: 'success',
+                        users: usersCount,
+                        projects: projectsCount
+                    })
+                }
+            })
+        }
     })
 })
 
