@@ -12,7 +12,7 @@
             <div slot="header">
                 <span>用户总数</span>
             </div>
-            <div class="content">
+            <div class="content" @click="toUserInfo">
                 {{ users }}
             </div>
         </el-card>
@@ -20,7 +20,7 @@
             <div slot="header">
                 <span>问卷总数</span>
             </div>
-            <div class="content">
+            <div class="content" @click="toProjectInfo">
                 {{ projects }}
             </div>
         </el-card>
@@ -50,6 +50,14 @@ export default {
         }
     },
     methods:{
+        toUserInfo(){
+            this.$router.push({ name: 'userInfo' });
+            this.$emit('changeActiveIndex','2');
+        },
+        toProjectInfo(){
+            this.$router.push({ name: 'projInfo' });
+            this.$emit('changeActiveIndex','3');
+        }
     },
     beforeCreate(){
         let self = this;
@@ -100,6 +108,7 @@ export default {
             justify-content: center;
             align-items: center;
             font-size: 6em;
+            cursor: default;
             .users{
                 width: 50%;
             }

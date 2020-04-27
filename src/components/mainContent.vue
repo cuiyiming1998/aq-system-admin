@@ -2,10 +2,11 @@
 <div class="main">
     <div class="container-left">
         <el-menu
-            default-active="1"
+            :default-active="activeIndex"
             background-color="#545c64"
             text-color="#fff"
-            active-text-color="#ffd04b">
+            active-text-color="#ffd04b"
+        >
             <router-link to="/systemInfo">
                 <el-menu-item index="1">
                     <i class="el-icon-menu"></i>
@@ -33,7 +34,7 @@
         </el-menu>
     </div>
     <div class="container-right">
-        <router-view></router-view>
+        <router-view  @changeActiveIndex="changeActiveIndex($event)"></router-view>
     </div>
 </div>
 </template>
@@ -46,6 +47,9 @@ export default {
         }
     },
     methods:{
+        changeActiveIndex:function(value){
+            this.activeIndex = value
+        },
         toUserInfo: function(){
             this.$router.push({ path: '/userInfo'})
         }
