@@ -104,4 +104,69 @@ app.get('/systemInfo',function(req,res){
     })
 })
 
+//获取用户信息
+
+app.get('/userInfo',function(req,res){
+    let userInfo = '';
+    let adminInfo = '';
+    let sql = 'select * from user';
+    pool.query(sql,[],(err,results)=>{
+        if(err){
+            console.log(err);
+            res.send({
+                code: 0,
+                status: 'error'
+            })
+        }else{
+            userInfo = toDataArr(results);
+            sql = 'select * from admins';
+            pool.query(sql,[],(err,results)=>{
+                if(err){
+                    console.log(err)
+                    res.send({
+                        code: 0,
+                        status: 'error'
+                    })
+                }else{
+                    adminInfo = toDataArr(results);
+                    res.send({
+                        code: 1,
+                        status: 'success',
+                        users: userInfo,
+                        admins: adminInfo
+                    })
+                }
+            })
+        }
+    })
+})
+
+// 禁用用户
+
+app.post('/ableUser',function(req,res){
+    let id = '';
+    let able = '';
+    let sql = 'update user set access=? where userId=?';
+    req.on('data',function(data){
+        id = JSON.parse(data).userId;
+        able = JSON.parse(data).able;
+    })
+    req.on('end',function(){
+        pool.query(sql,[able,id],(err,results)=>{
+            if(err){
+                console.log(err);
+                res.send({
+                    code: 0,
+                    status: 'error'
+                })
+            }else{
+                res.send({
+                    code: 1,
+                    status: 'success'
+                })
+            }
+        })
+    })
+})
+
 app.listen(4000);

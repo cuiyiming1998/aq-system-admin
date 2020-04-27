@@ -5,8 +5,17 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
     
+    beforeCreate(){
+        // let self = this;
+        // axios({
+        //     method: 'get',
+        //     url: '/answerInfo'
+        // })
+    }
 }
 </script>
 
