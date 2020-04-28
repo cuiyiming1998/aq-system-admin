@@ -169,4 +169,104 @@ app.post('/ableUser',function(req,res){
     })
 })
 
+// 获取问卷信息
+
+app.get('/ProjInfo',function(req,res){
+    let projInfo = [];
+    let sql = 'select * from projects';
+    pool.query(sql,[],(err,results)=>{
+        if(err){
+            console.log(err);
+            res.send({
+                code: 0,
+                status: 'error'
+            })
+        }else{
+            projInfo = toDataArr(results).reverse();
+            res.send({
+                code: 1,
+                status: 'success',
+                projInfo: projInfo
+            })
+        }
+    })
+})
+
+// 获取选中问卷的问题列表
+
+app.get('/getQuestions',function(req,res){
+    let id = req.query.id;
+    let sql = 'select * from questions where projectId=?';
+    pool.query(sql,[id],(err,results)=>{
+        if(err){
+            console.log(err);
+            res.send({
+                code: 0,
+                status: 'error'
+            })
+        }else{
+            let result = toDataArr(results);
+            for(let i=0;i<result.length;i++){
+                if(result[i].type == 'radio' || result[i].type == 'checkbox'){
+                    result[i].answers = JSON.parse(result[i].answers);
+                }
+            }
+            res.send({
+                code: '1',
+                status: 'success',
+                questions: result
+            })
+        }
+    })
+})
+
+// 删除已发布的问卷
+app.post('/deletePubProj',function(req,res){
+    let delData = '';
+    let sql = '';
+    let result = '';
+    req.on('data',function(data){
+        delData = JSON.parse(data)
+    })
+    req.on('end',function(){
+        // 删除projects表中信息
+        sql = 'delete from projects where projectId=?';
+        pool.query(sql,[delData.id],(err,results)=>{
+            if(err){
+                console.log(err);
+                res.send({
+                    code: 0,
+                    status: 'error'
+                })
+            }else{
+                // 删除questions表中问题信息
+                sql = 'delete from questions where projectId=?';
+                pool.query(sql,[delData.id],(err,results)=>{
+                    if(err){
+                        res.send({
+                            code: 0,
+                            status: 'error'
+                        })
+                    }else{
+                        sql = 'delete from answer where projectName=? and author=?';
+                        pool.query(sql,[delData.projectName,delData.username],(err,results)=>{
+                            if(err){
+                                res.send({
+                                    code: 0,
+                                    status: 'error'
+                                })
+                            }else{
+                                res.send({
+                                    code: 1,
+                                    status: 'success'
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    })
+})
+
 app.listen(4000);

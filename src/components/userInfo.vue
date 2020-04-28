@@ -32,8 +32,8 @@
             <el-table-column
             label="操作">
                 <template slot-scope="scope">
-                    <el-button type="text" size="small" v-if="scope.row.access == 'enable'" @click="ableUser(scope.row,'disable')">禁用</el-button>
-                    <el-button type="text" size="small" v-if="scope.row.access == 'disable'" @click="ableUser(scope.row,'enable')">解禁</el-button>
+                    <el-button type="primary" size="small" v-if="scope.row.access == 'enable'" @click="ableUser(scope.row,'disable','禁用')">禁用</el-button>
+                    <el-button type="primary" size="small" v-if="scope.row.access == 'disable'" @click="ableUser(scope.row,'enable','解禁')">解禁</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -68,19 +68,26 @@ export default {
         }
     },
     methods:{
-        ableUser(row,able){
+        ableUser(row,able,option){
             let self = this;
-            axios({
-                method: 'post',
-                url: '/ableUser',
-                data:{
-                    userId: row.userId,
-                    able: able
-                }
-            }).then((res)=>{
-                if(res.data.code == 1){
-                    self.getUserInfo();
-                }
+            this.$confirm(`确认${option}此用户吗？`,'提示',{
+                confirmButonText: '是',
+                cancelButtonText: '取消',
+            }).then(()=>{
+                axios({
+                    method: 'post',
+                    url: '/ableUser',
+                    data:{
+                        userId: row.userId,
+                        able: able
+                    }
+                }).then((res)=>{
+                    if(res.data.code == 1){
+                        self.getUserInfo();
+                    }
+                })
+            }).catch(()=>{
+
             })
         },
         // 获取数据
