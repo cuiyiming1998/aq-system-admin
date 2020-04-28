@@ -2,7 +2,7 @@
     <div class="user-info">
         <h1>用户信息</h1>
         <el-table
-            :data="users"
+            :data="users.filter(data => !search || data.username.toLowerCase().includes(search.toLowerCase()))"
             height="500">
             <el-table-column
                 label="id">
@@ -29,8 +29,10 @@
                 prop="time"
                 label="注册时间">
             </el-table-column>
-            <el-table-column
-            label="操作">
+            <el-table-column>
+                <template slot="header" slot-scope="scope">
+                    <el-input v-model="search" size="mini" placeholder="按用户名查找"/>
+                </template>
                 <template slot-scope="scope">
                     <el-button type="primary" size="small" v-if="scope.row.access == 'enable'" @click="ableUser(scope.row,'disable','禁用')">禁用</el-button>
                     <el-button type="primary" size="small" v-if="scope.row.access == 'disable'" @click="ableUser(scope.row,'enable','解禁')">解禁</el-button>
@@ -64,7 +66,8 @@ export default {
     data(){
         return {
             users: [],
-            admins: []
+            admins: [],
+            search: ''
         }
     },
     methods:{

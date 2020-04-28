@@ -2,7 +2,7 @@
     <div class="user-info">
         <h1>问卷信息</h1>
         <el-table
-            :data="projects"
+            :data="projects.filter(data => !search || data.projectName.toLowerCase().includes(search.toLowerCase()))"
             height="500"
             @cell-click="detailInfo($event)"
             >
@@ -24,8 +24,10 @@
                 prop="time"
                 label="发布时间">
             </el-table-column>
-            <el-table-column
-            label="操作">
+            <el-table-column>
+                <template slot="header" slot-scope="scope">
+                    <el-input v-model="search" size="mini" placeholder="按问卷名查找"/>
+                </template>
                 <template slot-scope="scope">
                     <el-button type="danger" size="small" @click.stop="deleteProj(scope.row)">删除</el-button>
                 </template>
@@ -60,6 +62,7 @@ export default {
         return {
             projects: [],
             questions: [],
+            search: ''
         }
     },
     methods:{
