@@ -49,7 +49,7 @@
                 <el-input v-model="adminForm.username"></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="password">
-                <el-input v-model="adminForm.password"></el-input>
+                <el-input v-model="adminForm.password" type="password"></el-input>
             </el-form-item>
             <el-form-item label="使用者姓名" prop="name">
                 <el-input v-model="adminForm.name"></el-input>
@@ -123,6 +123,10 @@ export default {
                 }).then((res)=>{
                     if(res.data.code == 1){
                         self.getUserInfo();
+                        self.$message({
+                            message: `${option}成功！`,
+                            type: 'success'
+                        })
                     }
                 })
             }).catch(()=>{
