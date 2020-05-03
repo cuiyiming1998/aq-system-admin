@@ -169,6 +169,32 @@ app.post('/ableUser',function(req,res){
     })
 })
 
+// 添加管理员
+
+app.post('/addAdmin',function(req,res){
+    let adminData = '';
+    let sql = 'insert into admins(username,password,name) values(?,?,?)'
+    req.on('data',function(data){
+        adminData = JSON.parse(data);
+    })
+    req.on('end',function(){
+        pool.query(sql,[adminData.username,adminData.password,adminData.name],(err,results)=>{
+            if(err){
+                console.log(err);
+                res.send({
+                    code: 0,
+                    status: 'error'
+                })
+            }else{
+                res.send({
+                    code: 1,
+                    status: 'success'
+                })
+            }
+        })
+    })
+})
+
 // 获取问卷信息
 
 app.get('/ProjInfo',function(req,res){

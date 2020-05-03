@@ -5,7 +5,7 @@
             :default-active="activeIndex"
             background-color="#545c64"
             text-color="#fff"
-            active-text-color="#ffd04b"
+            active-text-color="#409EFF"
         >
             <router-link to="/systemInfo">
                 <el-menu-item index="1">

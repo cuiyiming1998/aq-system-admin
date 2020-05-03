@@ -39,10 +39,30 @@
                 </template>
             </el-table-column>
         </el-table>
-        <h1>管理员信息</h1>
+        <h1>管理员信息 <i class="el-icon-circle-plus-outline add-admin" @click="dialogVisible = true"></i></h1>
+        <el-dialog
+        title="添加管理员"
+        :visible.sync="dialogVisible"
+        width="30%">
+        <el-form :model="adminForm" :rules="rules" ref="adminForm">
+            <el-form-item label="用户名" prop="username">
+                <el-input v-model="adminForm.username"></el-input>
+            </el-form-item>
+            <el-form-item label="密码" prop="password">
+                <el-input v-model="adminForm.password"></el-input>
+            </el-form-item>
+            <el-form-item label="使用者姓名" prop="name">
+                <el-input v-model="adminForm.name"></el-input>
+            </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="addAdmin('adminForm')">确 定</el-button>
+        </span>
+        </el-dialog>
         <el-table
             :data="admins"
-            height="200">
+            height="250">
             <el-table-column
                 prop="userId"
                 label="id">
@@ -67,7 +87,23 @@ export default {
         return {
             users: [],
             admins: [],
-            search: ''
+            search: '',
+            dialogVisible: false,
+            adminForm:{
+                username: '',
+                password: '',
+                name: ''
+            },
+            rules:{
+                username: [
+                    { required: true, message: '请输入用户名', trigger: 'blur' },
+                    { min: 3, max: 12, message: '长度在 3 到 12 个字符', trigger: 'blur' }
+                ],
+                password: [
+                    { required: true, message: '请输入密码', trigger: 'blur' },
+                    { min: 3, max: 12, message: '长度在 3 到 12 个字符', trigger: 'blur' }
+                ],
+            }
         }
     },
     methods:{
@@ -90,8 +126,41 @@ export default {
                     }
                 })
             }).catch(()=>{
-
             })
+        },
+        // 添加管理员
+        addAdmin(formName){
+            let self = this;
+            this.$refs[formName].validate((valid)=>{
+                if(valid){
+                    console.log('success');
+                    axios({
+                        method: 'post',
+                        url: '/addAdmin',
+                        data:{
+                            username: self.adminForm.username,
+                            password: self.adminForm.password,
+                            name: self.adminForm.name
+                        }
+                    }).then((res)=>{
+                        if(res.data.code == 1){
+                            self.$message({
+                                message: '添加成功！',
+                                type: 'success'
+                            })
+                            self.resetForm(formName);
+                            self.dialogVisible = false;
+                            self.getUserInfo();
+                        }
+                    })
+                }else{
+                    console.log('error');
+                    return false;
+                }
+            })
+        },
+        resetForm(formName) {
+            this.$refs[formName].resetFields();
         },
         // 获取数据
         getUserInfo(){
@@ -125,6 +194,13 @@ export default {
     h1{
         margin-top: 20px;
         text-align: center;
+    }
+    .add-admin{
+        margin: 0 20px;
+        cursor: pointer;
+    }
+    .add-admin:hover{
+        color: #409EFF
     }
 }
 </style>
