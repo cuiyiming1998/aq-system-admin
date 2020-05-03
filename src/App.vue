@@ -17,6 +17,7 @@ export default {
 *{
   margin: 0;
   padding: 0;
+  touch-action: pan-y;
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
