@@ -60,13 +60,15 @@ export default {
 <style lang="scss" scoped>
 .main{
     width: 100vw;
-    height: calc(100vh - 70px);
     display: flex;
     a{
         text-decoration: none;
     }
+    position: relative;
     .container-left{
         width: 200px;
+        min-height: 100vh;
+        margin-bottom: 0;
         padding: 20px 0;
         text-align: center;
         background-color: #545c64;

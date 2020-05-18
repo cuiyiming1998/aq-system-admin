@@ -95,8 +95,8 @@ export default {
     align-items: center;
     flex-wrap: wrap;
     .card{
-        width: 40%;
-        height: 360px;
+        width: 35%;
+        height: 350px;
         box-sizing: border-box;
         margin: 0 auto;
         display: flex;

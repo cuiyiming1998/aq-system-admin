@@ -2,10 +2,10 @@
     <div class="main">
         <el-form class="container" :rules="rules" ref="loginForm" :model="loginForm">
             <div class="items">
-                <h1>调查问卷系统</h1>
+                <h1>调查问卷系统后台管理</h1>
             </div>
             <el-form-item class="items" prop="username">
-                <el-input v-model="loginForm.username" placeholder="请输入用户名" class="input"></el-input>
+                <el-input v-model="loginForm.username" placeholder="请输入管理员账号" class="input"></el-input>
             </el-form-item>
             <el-form-item class="items" prop="password">
                 <el-input type="password" v-model="loginForm.password" placeholder="请输入密码" class="input"></el-input>
@@ -29,7 +29,7 @@ export default {
                 username:[
                         {
                             required: true,
-                            message: '请输入用户名',
+                            message: '请输入账号',
                             trigger: 'blur'
                         },
                 ],
@@ -88,7 +88,7 @@ export default {
         .container{
             min-width: 450px;
             height: 400px;
-            margin-top: 200px;
+            margin-top: 150px;
             padding: 30px;
             display: flex;
             flex-direction: column;

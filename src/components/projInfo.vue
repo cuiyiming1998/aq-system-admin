@@ -2,7 +2,7 @@
     <div class="user-info">
         <h1>问卷信息</h1>
         <el-table
-            :data="projects.filter(data => !search || data.projectName.toLowerCase().includes(search.toLowerCase()))"
+            :data="projects .filter(data => !search || data.projectName.toLowerCase().includes(search.toLowerCase()))"
             height="500"
             @cell-click="detailInfo($event)"
             >

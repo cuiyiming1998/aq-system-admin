@@ -3,7 +3,7 @@
         <h1>用户信息</h1>
         <el-table
             :data="users.filter(data => !search || data.username.toLowerCase().includes(search.toLowerCase()))"
-            height="500">
+            height="450">
             <el-table-column
                 label="id">
                 <template slot-scope="scope">
@@ -137,7 +137,6 @@ export default {
             let self = this;
             this.$refs[formName].validate((valid)=>{
                 if(valid){
-                    console.log('success');
                     axios({
                         method: 'post',
                         url: '/addAdmin',
